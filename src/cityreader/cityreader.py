@@ -14,7 +14,6 @@ class City():
     def __str__(self):
         return f'\n{self.name}, {self.lat}, {self.lon}'
 
-
         # We have a collection of US cities with population over 750,000 stored in the
         # file "cities.csv". (CSV stands for "comma-separated values".)
         #
@@ -79,15 +78,40 @@ for c in cities:
 # Tucson: (32.1558,-110.8777)
 # Salt Lake City: (40.7774,-111.9301)
 
-# TODO Get latitude and longitude values from the user
-
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
-    # within will hold the cities that fall within the specified region
-    within = []
 
-    # TODO Ensure that the lat and lon valuse are all floats
+    # convert all coordinates to floats
+    lat1 = float(lat1)
+    lon1 = float(lon1)
+    lat2 = float(lat2)
+    lon2 = float(lon2)
+
+    # to normalize potential range, swap lat and lon coordinates to make lower-left to upper-right area
+
+    if lat1 > lat2:
+        temp = lat1
+        lat1 = lat2
+        lat2 = temp
+
+    if lon1 > lon2:
+        temp = lon1
+        lon1 = lon2
+        lon2 = temp
+
     # Go through each city and check to see if it falls within
     # the specified coordinates.
 
+    # within will hold the cities that fall within the specified region
+
+    within = [c for c in cities if lat1 < c.lat < lat2 and lon1 < c.lon < lon2]
+
     return within
+
+
+#  Get latitude and longitude values from the user
+coord1 = input(
+    "Enter a coordinate with format [longitude] [latitude]: ").split(' ')
+coord2 = input("Enter a second coordinate: ").split(' ')
+
+print(cityreader_stretch(coord1[0], coord1[1], coord2[0], coord2[1], cities))
